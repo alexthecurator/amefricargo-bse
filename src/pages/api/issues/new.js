@@ -6,11 +6,11 @@ export default async function (req, res) {
 
   if (method !== "POST") return res.status(400).send({ msg: "Bad request" });
 
-  let { status } = validatePayload(["email"], req);
+  let { status } = validatePayload(["email", "device", "problem"], req);
 
   if (status) return res.status(400).send({ msg: status });
 
-  let { email } = req.body ?? {};
+  let { email, device, problem } = req.body ?? {};
 
   let user = await prisma.User.findUnique({
     where: { email },
@@ -19,17 +19,15 @@ export default async function (req, res) {
     },
   });
 
-  let issues = await prisma.Issues.findMany({
-    where: {
-      userId: user?.id,
-    },
-    select: {
-      device: true,
-      problem: true,
-      status: true,
-      technician: true,
+  if (!user.id) return res.status(500).send({ msg: "Please sign in first" });
+
+  await prisma.Issues.create({
+    data: {
+      device,
+      problem,
+      userId: user.id,
     },
   });
 
-  return res.status(200).send(issues);
+  return res.status(200).send({ msg: "Your issue is received" });
 }

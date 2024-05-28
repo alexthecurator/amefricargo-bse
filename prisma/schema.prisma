@@ -12,13 +12,13 @@ model Issues {
   createdAt  DateTime @default(now())
   device     String
   problem    String
-  status     String   @default("created")
+  status     String?  @default("created")
   technician String?
   credit     Float?   @default(0.0)
   debit      Float?   @default(0.0)
   quote      Float?   @default(0.0)
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String   @unique
+  userId     String
 }
 
 model User {

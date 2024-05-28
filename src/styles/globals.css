@@ -2,4 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
+button {
+  display: flex;
+  cursor: pointer;
+  appearance: none;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 5px;
+  justify-content: center;
+  text-transform: capitalize;
+}
+
+input, textarea {
+  appearance: none;
+  outline: none;
+  padding: 6px 16px;
+  margin: 2px;
+}
+
+.o-black {
+  border: 1px #0e0e0e solid;
+  border-radius: 5px;
+}
+
+.s-black {
+  background: #0e0e0e;
+  color: white;
+}
+
+.s-black:hover {
+  background: gray;
+}
