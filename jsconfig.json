@@ -2,8 +2,6 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@/store": ["./store/*"],
-      "@/lib": ["./lib/*"]
     }
   }
 }

@@ -5,13 +5,13 @@ import { IoIosNotifications as Notification } from "react-icons/io";
 
 const Navbar = () => {
   return (
-    <nav className="w-full h-8 flex flex-row justify-between m-0 px-8">
-      <span>{/* Empty Slot */}</span>
+    <nav className="w-full flex flex-row justify-between p-6">
+      <span></span>
       <Image
         className="ml-16"
-        src={"./logo.svg"}
-        width={500}
-        height={500}
+        src={"/logo.svg"}
+        width={150}
+        height={150}
         alt={"Gadget Support logo"}
       />
       <span className="flex flex-row items-center justify-center space-x-4">

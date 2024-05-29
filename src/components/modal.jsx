@@ -1,6 +1,6 @@
 import { IoCloseCircleSharp as Close } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { toggle } from "../../store/ui";
+import { toggle } from "../store/ui";
 
 const Modal = ({ children }) => {
   let dispatch = useDispatch();
@@ -13,7 +13,7 @@ const Modal = ({ children }) => {
       aria-hidden="true"
       className={`w-screen h-screen ${
         on ? "fixed" : "hidden"
-      } top-0 left-0 z-10 bg-black/[0.1] backdrop-blur-sm`}
+      } top-0 left-0 z-10 bg-black/[0.35]`}
     >
       <div className="w-full relative max-w-[40%] bg-white rounded-lg p-2 fixed z-20 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%]">
         <button

@@ -1,53 +1,51 @@
+// React
 import Image from "next/image";
-import { signIn, useSession } from "next-auth/react";
 
-// Icon
-import { FaApple as Apple } from "react-icons/fa";
-import { FcGoogle as Google } from "react-icons/fc";
+// Redux
+import { useDispatch } from "react-redux";
+
+// Auth
+import { useSession } from "next-auth/react";
+
+// Icons
+import { FaPlus as Plus } from "react-icons/fa";
 
 const Placeholder = () => {
-  let { status } = useSession();
-
   return (
-    <div className="w-screen h-[55vh] flex flex-col justify-end items-center">
-      <span className="flex flex-col justify-center items-center space-y-12">
-        {/* Placeholders */}
-        <Image
-          src={"/placeholder.svg"}
-          width={500}
-          height={500}
-          alt="Placeholder"
-        />
-
-        {/* Call to actions */}
-        {status === "unauthenticated" ? <UserActions /> : ""}
-      </span>
+    <div className="w-full flex flex-col space-y-5">
+      <Image
+        src={"/placeholder.svg"}
+        width={900}
+        height={900}
+        alt="Placeholder"
+      />
+      <AddIssue />
     </div>
   );
 };
 
-const UserActions = () => {
+const AddIssue = () => {
+  let dispatch = useDispatch();
+  let { status } = useSession();
+
   return (
-    <span className="flex flex-row space-x-1 mr-3">
-      <button
-        className="s-black"
-        onClick={async () => {
-          await signIn("google");
-        }}
-      >
-        <p>sign in</p>
-        <Google className="ml-4" size={20} />{" "}
-      </button>
-      <button
-        className="s-black"
-        onClick={async () => {
-          await signIn("apple");
-        }}
-      >
-        <p>sign in</p>
-        <Apple className="ml-4" size={20} />
-      </button>
-    </span>
+    <button
+      type="button"
+      onClick={() => {
+        dispatch(
+          toggle({
+            origin: "modal",
+            status: { on: true, id: "add-issue-modal" },
+          })
+        );
+      }}
+      className={`${
+        status === "authenticated" ? "flex" : "hidden"
+      } s-black flex-row space-x-3`}
+    >
+      <Plus size={15} color={"#fff"} />
+      <p>submit your issue</p>
+    </button>
   );
 };
 

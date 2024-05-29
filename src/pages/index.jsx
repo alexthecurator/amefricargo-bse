@@ -1,16 +1,47 @@
-import { Placeholder, Navbar, Card, Modal } from "@/components";
-import NewIssue from "@/modules/form";
+// React
 import { useEffect, useState } from "react";
+
+// Redux
+import { toggle } from "@/store/ui";
+import { useDispatch, useSelector } from "react-redux";
+
+// Utils
+import { request } from "@/lib/utils";
+
+// Components
+import { NewIssue, SignUp } from "@/modules/form";
+import { Placeholder, Navbar, Card, Modal } from "@/components";
+
+// Auth
+import SignIn from "@/modules/auth";
+import { useSession } from "next-auth/react";
 
 // Icons
 import { FaPlus as Plus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { toggle } from "../../store/ui";
-import { useSession } from "next-auth/react";
-
-import { request } from "../../lib/utils";
 
 export default function Home() {
+  return (
+    <main>
+      <Modals />
+      <Navbar />
+      <Render />
+      <AddIssue />
+    </main>
+  );
+}
+
+const Modals = () => {
+  let { id } = useSelector((state) => state.ui.modal);
+
+  let content = {
+    "add-issue": <NewIssue />,
+    "sign-up": <SignUp />,
+  };
+
+  return <Modal>{content[id]}</Modal>;
+};
+
+const Render = () => {
   let { data: session, status } = useSession();
   let [data, setData] = useState([]);
 
@@ -19,8 +50,6 @@ export default function Home() {
   async function getIssues() {
     try {
       let response = await request.post("issues/all", { email });
-
-      console.log(response);
       response?.status === 200 ? setData(response?.data) : false;
     } catch (error) {
       console.log(error);
@@ -31,17 +60,19 @@ export default function Home() {
     status === "authenticated" && getIssues();
   }, [status]);
 
-  return (
-    <main className={`space-y-8`}>
-      <Modal>
-        <NewIssue />
-      </Modal>
-      <Navbar />
-      {data?.length > 0 ? <Issues data={data} /> : <Placeholder />}
-      <AddIssue />
-    </main>
-  );
-}
+  if (data?.length > 0) {
+    return <Issues data={data} />;
+  } else {
+    return (
+      <span className="w-full h-screen max-h-[80vh] flex flex-col justify-center items-center">
+        <span className="w-[21rem] flex flex-col justify-center items-center space-y-8">
+          <Placeholder />
+          {status === "unauthenticated" && <SignIn />}
+        </span>
+      </span>
+    );
+  }
+};
 
 const Issues = ({ data = [] }) => {
   return (
@@ -68,7 +99,7 @@ const AddIssue = () => {
           dispatch(
             toggle({
               origin: "modal",
-              status: { on: true, id: "add-issue-modal" },
+              status: { on: true, id: "add-issue" },
             })
           );
       }}
