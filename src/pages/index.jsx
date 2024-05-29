@@ -76,12 +76,20 @@ const Render = () => {
 
 const Issues = ({ data = [] }) => {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <input type="text" />
-      <span className="w-1/2 flex flex-col items-center justify-center space-y-2">
-        {data?.map((issue, index) => {
-          return <Card key={index} {...issue} />;
-        })}
+    <div className="w-full h-screen flex flex-col justify-start items-center pt-36">
+      <span className="w-1/2 flex flex-col space-y-4">
+        <input
+          className="w-full o-black"
+          type="text"
+          name=""
+          id=""
+          placeholder="Search for your issues 😂"
+        />
+        <span className="grid grid-cols-3 gap-4">
+          {data?.map((issue, index) => {
+            return <Card key={index} {...issue} />;
+          })}
+        </span>
       </span>
     </div>
   );
