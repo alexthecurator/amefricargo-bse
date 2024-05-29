@@ -1,18 +1,19 @@
 import NextAuth from "next-auth";
+import CryptoJS from "crypto-js";
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 // Providers
-import AppleProvider from "next-auth/providers/apple";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const authOptions = {
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     CredentialsProvider({
-      name: "Let's Signin",
-      creadentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials;
 
@@ -21,7 +22,6 @@ const authOptions = {
             email,
           },
           select: {
-            id: true,
             name: true,
             image: true,
             email: true,
@@ -33,14 +33,16 @@ const authOptions = {
           },
         });
 
-        console.log(user);
-
         if (user) {
           // Extract password
           const found = user.Password[0].password;
+
+          const hashed = CryptoJS.SHA512(password).toString(
+            CryptoJS.enc.Base64
+          );
           // Match password if correct
-          if (found === password) {
-            delete user.Accounts; // remove accounts from returning payload
+          if (found === hashed) {
+            delete user.Password; // remove password from returning payload
             return user;
           } else {
             return false;
@@ -54,11 +56,8 @@ const authOptions = {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    AppleProvider({
-      clientId: process.env.APPLE_ID,
-      clientSecret: process.env.APPLE_SECRET,
-    }),
   ],
+
   pages: {
     signIn: "/",
     signOut: "/",

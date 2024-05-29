@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { request } from "../lib/utils";
+import { request } from "@/lib/utils";
 import { signIn, useSession } from "next-auth/react";
 
 export const NewIssue = () => {
@@ -67,15 +67,11 @@ export const CredentialLogin = () => {
   }
 
   return (
-    <form
-      onSubmit={async () => await signIn("credentials")}
-      className="w-full h-full flex flex-col space-y-2"
-    >
+    <form className="w-full h-full flex flex-col space-y-2">
       <input
         id="email"
         className="o-black"
         onChange={onChange}
-        value={payload?.email}
         type="email"
         placeholder="Email"
       />
@@ -83,11 +79,20 @@ export const CredentialLogin = () => {
         id="password"
         className="o-black"
         onChange={onChange}
-        value={payload?.password}
         type="password"
         placeholder="Password"
       />
-      <button className="w-full s-black" type="submit">
+      <button
+        className="w-full s-black"
+        type="button"
+        onClick={async () => {
+          let response = await signIn("credentials", {
+            redirect: false,
+            ...payload,
+          });
+          console.log(response);
+        }}
+      >
         login
       </button>
     </form>

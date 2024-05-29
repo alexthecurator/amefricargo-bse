@@ -2,6 +2,7 @@
 import Image from "next/image";
 
 // Redux
+import { toggle } from "@/store/ui";
 import { useDispatch } from "react-redux";
 
 // Auth
@@ -35,7 +36,7 @@ const AddIssue = () => {
         dispatch(
           toggle({
             origin: "modal",
-            status: { on: true, id: "add-issue-modal" },
+            status: { on: true, id: "add-issue" },
           })
         );
       }}

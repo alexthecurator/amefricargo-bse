@@ -29,5 +29,9 @@ export default async function (req, res) {
     },
   });
 
+  // Send email to notify
+  // Gadget support
+  // Client
+
   return res.status(200).send({ msg: "Your issue is received" });
 }
