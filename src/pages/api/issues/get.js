@@ -6,7 +6,7 @@ export default async function (req, res) {
 
   if (method !== "POST") return res.status(400).send({ msg: "Bad request" });
 
-  let { status } = validatePayload(["user"], req);
+  let { status } = validatePayload(["issue"], req);
 
   if (status) return res.status(400).send({ msg: status });
 
@@ -21,8 +21,17 @@ export default async function (req, res) {
       problem: true,
       status: true,
       technician: true,
+      credit: true,
+      debit: true,
+      quote: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
   });
 
-  return res.status(200).send({ data: issues });
+  return res.status(200).send({ issues });
 }

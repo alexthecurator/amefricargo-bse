@@ -3,7 +3,7 @@ import Image from "next/image";
 
 // Redux
 import { toggle } from "@/store/ui";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Auth
 import { useSession } from "next-auth/react";
@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react";
 import { FaPlus as Plus } from "react-icons/fa";
 
 const Placeholder = () => {
+  let { type } = useSelector((state) => state.persisted);
+
   return (
     <div className="w-full flex flex-col space-y-5">
       <Image
@@ -20,7 +22,8 @@ const Placeholder = () => {
         height={900}
         alt="Placeholder"
       />
-      <AddIssue />
+
+      {type !== "admin" ? <AddIssue /> : ""}
     </div>
   );
 };

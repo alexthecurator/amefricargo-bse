@@ -1,4 +1,5 @@
 import storage from "redux-persist/lib/storage";
+
 import { configureStore } from "@reduxjs/toolkit";
 import {
   persistReducer,
@@ -12,11 +13,12 @@ import {
 } from "redux-persist";
 
 import ui from "./ui";
+import user from "./user";
 
-// const persistedReducer = persistReducer({ key: "saved", storage }, persisted);
+const persisted = persistReducer({ key: "saved", storage }, user);
 
 export const store = configureStore({
-  reducer: { ui },
+  reducer: { ui, persisted },
   //   devTools: !process.env.PROD,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -23,6 +23,10 @@ export function validatePayload(fields = [], req) {
   return status;
 }
 
+export function trimming(val, size = 54) {
+  return val.length > size ? `${val?.slice(0, size)}...` : val;
+}
+
 export const request = axios.create({
   baseURL: "http://localhost:3000/api/",
 });

@@ -15,7 +15,7 @@ button {
   text-transform: capitalize;
 }
 
-input, textarea {
+input, select, textarea {
   appearance: none;
   outline: none;
   padding: 6px 16px;
