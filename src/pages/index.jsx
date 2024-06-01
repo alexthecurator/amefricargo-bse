@@ -144,13 +144,19 @@ const Issues = ({ stream = [] }) => {
               <option value="created">created</option>
               <option value="received">received</option>
               <option value="inprogress">in-progress</option>
-              <option value="fixed">fixed</option>
+              <option value="fixed">
+                <span className="rounded-full bg-green-500"></span>
+                <p>fixed</p>
+              </option>
             </select>
           </fieldset>
           <fieldset className="w-3/4 flex flex-row o-black">
             <label htmlFor="">created:</label>
             <input id="createdAt" type="date" onChange={onChange} />
           </fieldset>
+          <button className="s-black" type="button" onClick={() => submit()}>
+            clear
+          </button>
           <button className="s-black" type="button" onClick={() => submit()}>
             search
           </button>

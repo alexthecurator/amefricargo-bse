@@ -282,7 +282,7 @@ export const UpdateIssue = () => {
         <fieldset className="w-full flex flex-row items-center o-black">
           <label htmlFor="">credit:</label>
           <span className="flex flex-row items-center">
-            <small className="ml-2 py-[3px] px-[9px] bg-slate-200 rounded-md capitalize font-medium">
+            <small className="ml-2 py-[3px] px-[9px] bg-red-200 rounded-md capitalize font-medium">
               tzs
             </small>
             <input
@@ -297,7 +297,7 @@ export const UpdateIssue = () => {
         <fieldset className="w-full flex flex-row items-center o-black">
           <label htmlFor="">debit:</label>
           <span className="flex flex-row items-center">
-            <small className="ml-2 py-[3px] px-[9px] bg-slate-200 rounded-md capitalize font-medium">
+            <small className="ml-2 py-[3px] px-[9px] bg-green-200 rounded-md capitalize font-medium">
               tzs
             </small>
             <input
