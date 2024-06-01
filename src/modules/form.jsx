@@ -134,28 +134,24 @@ export const SignUp = () => {
 
   return (
     <form onSubmit={submit} className="w-full h-full flex flex-col space-y-2">
-      <input
-        id="name"
-        className="o-black"
-        onChange={onChange}
-        type="text"
-        placeholder="What's your name?"
-      />
-      <input
-        id="email"
-        className="o-black"
-        onChange={onChange}
-        type="email"
-        placeholder="Enter your email"
-      />
+      <fieldset className="flex flex-row items-center o-black">
+        <label htmlFor="">name:</label>
+        <input onChange={onChange} type="text" />
+      </fieldset>
+      <fieldset className="flex flex-row items-center o-black">
+        <label htmlFor="">email:</label>
+        <input onChange={onChange} type="email" />
+      </fieldset>
       <span className="w-full flex flex-row space-x-2">
-        <input
-          id="password"
-          className="w-full o-black"
-          onChange={onChange}
-          type="password"
-          placeholder="Create a new password"
-        />
+        <fieldset className="w-full flex flex-row items-center o-black">
+          <label htmlFor="">password:</label>
+          <input
+            id="password"
+            onChange={onChange}
+            type="password"
+            placeholder="Create a new password"
+          />
+        </fieldset>
         <input
           id="password_rp"
           className="w-full o-black"
@@ -210,75 +206,109 @@ export const UpdateIssue = () => {
 
   return (
     <form onSubmit={submit} className="w-full h-full flex flex-col space-y-2">
-      <input
-        className="o-black bg-slate-100"
-        type="text"
-        value={data?.user?.name}
-        readOnly
-      />
-      <input
-        id="email"
-        className="o-black bg-slate-100"
-        type="email"
-        value={data?.user?.email}
-        readOnly
-      />
-      <input
-        id="device"
-        className="o-black bg-slate-100"
-        type="text"
-        value={data?.device}
-        placeholder="Enter your device number or id"
-        readOnly
-      />
-      <textarea
-        id="problem"
-        rows={10}
-        className="o-black bg-slate-100"
-        placeholder="Describe the problem"
-        value={data?.problem}
-        readOnly
-      ></textarea>
-      <span className="flex flex-row space-x-2">
-        <select
-          id="status"
-          className="w-3/6 o-black capitalize"
-          onChange={onChange}
-          value={data?.status}
-        >
-          <option value="" default>
-            Select status
-          </option>
-          <option value="received">received</option>
-          <option value="inprogress">in-progress</option>
-          <option value="fixed">fixed</option>
-        </select>
+      <fieldset className="flex flex-row items-center o-black bg-slate-100">
+        <label htmlFor="">name:</label>
         <input
-          id="quote"
-          className="w-full o-black"
-          type="number"
-          onChange={onChange}
-          value={data?.quote}
-          placeholder={"Your price quote"}
+          className="bg-slate-100"
+          type="text"
+          value={data?.user?.name}
+          readOnly
         />
+      </fieldset>
+      <fieldset className="flex flex-row items-center o-black bg-slate-100">
+        <label htmlFor="">email:</label>
+        <input
+          className="bg-slate-100"
+          type="text"
+          value={data?.user?.email}
+          readOnly
+        />
+      </fieldset>
+      <fieldset className="flex flex-row items-center o-black bg-slate-100">
+        <label htmlFor="">device:</label>
+        <input
+          className="bg-slate-100"
+          type="text"
+          value={data?.device}
+          readOnly
+        />
+      </fieldset>
+      <fieldset className="flex flex-col items-start o-black bg-slate-100">
+        <label htmlFor="">issue:</label>
+        <textarea
+          id="problem"
+          rows={10}
+          className="bg-slate-100 m-0"
+          placeholder="Describe the problem"
+          value={data?.problem}
+          readOnly
+        ></textarea>
+      </fieldset>
+
+      <span className="flex flex-row space-x-2">
+        <fieldset className="w-3/5 o-black flex flex-row space-x-2">
+          <label htmlFor="">status:</label>
+          <select
+            id="status"
+            className="capitalize round"
+            onChange={onChange}
+            value={data?.status}
+          >
+            <option value="" default>
+              Select status
+            </option>
+            <option value="received">received</option>
+            <option value="inprogress">in-progress</option>
+            <option value="fixed">fixed</option>
+          </select>
+        </fieldset>
+        <fieldset className="w-full flex flex-row items-center o-black">
+          <label htmlFor="">quote:</label>
+          <span className="w-full flex flex-row items-center">
+            <small className="ml-2 py-[3px] px-[9px] bg-slate-200 rounded-md capitalize font-medium">
+              tzs
+            </small>
+            <input
+              id="quote"
+              type="number"
+              onChange={onChange}
+              value={data?.quote}
+            />
+          </span>
+        </fieldset>
       </span>
+
       <span className="flex flex-row space-x-2">
-        <input
-          id="credit"
-          className="w-full o-black"
-          type="number"
-          onChange={onChange}
-          value={data?.credit}
-          placeholder={"Your price quote"}
-        />
-        <input
-          id="debit"
-          className="w-full o-black"
-          type="number"
-          onChange={onChange}
-          value={data?.debit}
-          placeholder={"Your price quote"}
-        />
+        <fieldset className="w-full flex flex-row items-center o-black">
+          <label htmlFor="">credit:</label>
+          <span className="flex flex-row items-center">
+            <small className="ml-2 py-[3px] px-[9px] bg-slate-200 rounded-md capitalize font-medium">
+              tzs
+            </small>
+            <input
+              id="credit"
+              type="number"
+              onChange={onChange}
+              value={data?.credit}
+              placeholder={"Your price quote"}
+            />
+          </span>
+        </fieldset>
+        <fieldset className="w-full flex flex-row items-center o-black">
+          <label htmlFor="">debit:</label>
+          <span className="flex flex-row items-center">
+            <small className="ml-2 py-[3px] px-[9px] bg-slate-200 rounded-md capitalize font-medium">
+              tzs
+            </small>
+            <input
+              id="debit"
+              type="number"
+              onChange={onChange}
+              value={data?.debit}
+              placeholder={"Your price quote"}
+            />
+          </span>
+        </fieldset>
       </span>
       <button className="w-full s-black" type="submit">
         Update Issue

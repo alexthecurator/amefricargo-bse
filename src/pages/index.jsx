@@ -79,7 +79,7 @@ const Render = () => {
   }, [status]);
 
   if (data?.length > 0) {
-    return <Issues data={data} />;
+    return <Issues stream={data} />;
   } else {
     return (
       <span className="w-full h-screen max-h-[80vh] flex flex-col justify-center items-center">
@@ -92,35 +92,70 @@ const Render = () => {
   }
 };
 
-const Issues = ({ data = [] }) => {
-  function onChange() {}
+const Issues = ({ stream = [] }) => {
+  let { data: session } = useSession();
+  let [data, setData] = useState([]);
+
+  let { type } = useSelector((state) => state.persisted);
+
+  let [filters, setFilter] = useState({});
+
+  function onChange(e) {
+    let { id, value } = e?.target;
+    setFilter({ ...filters, [id]: value });
+  }
+
+  async function submit() {
+    filters.type = type;
+    type !== "admin" ? (filters.email = session?.user?.email) : false;
+    try {
+      setData([]);
+      let response = await request.post("issues/filter", filters);
+      response?.status === 200 ? setData(response?.data) : false;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    stream?.length > 0 ? setData(stream) : false;
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-center pt-36">
       <span className="w-1/2 flex flex-col space-y-4">
+        {/* Filters */}
         <span className="flex flex-row space-x-2 items-center justify-center">
-          <input
-            className="w-full o-black"
-            type="text"
-            name=""
-            id="search"
-            placeholder="Search for your issues 😂"
-          />
-          <select
-            id="status"
-            className="w-3/6 o-black capitalize"
-            onChange={onChange}
-            value={data?.status}
-          >
-            <option value="" default>
-              Select status
-            </option>
-            <option value="received">received</option>
-            <option value="inprogress">in-progress</option>
-            <option value="fixed">fixed</option>
-          </select>
-          <input id="created" className="o-black" type="date" />
+          <fieldset className="w-full flex flex-row o-black">
+            <label htmlFor="">device:</label>
+            <input
+              type="text"
+              id="device"
+              onChange={onChange}
+              placeholder="Search device"
+            />
+          </fieldset>
+          <fieldset className="w-3/4 flex flex-row o-black">
+            <label htmlFor="">status:</label>
+            <select id="status" className="round" onChange={onChange}>
+              <option value="" default>
+                Select status
+              </option>
+              <option value="created">created</option>
+              <option value="received">received</option>
+              <option value="inprogress">in-progress</option>
+              <option value="fixed">fixed</option>
+            </select>
+          </fieldset>
+          <fieldset className="w-3/4 flex flex-row o-black">
+            <label htmlFor="">created:</label>
+            <input id="createdAt" type="date" onChange={onChange} />
+          </fieldset>
+          <button className="s-black" type="button" onClick={() => submit()}>
+            search
+          </button>
         </span>
+        {/* Listing */}
         <span className="grid grid-cols-3 gap-4">
           {data?.map((issue, index) => {
             return <Card key={index} {...issue} />;

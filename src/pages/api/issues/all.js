@@ -4,6 +4,24 @@ import { validatePayload } from "@/lib/utils";
 export default async function (req, res) {
   let { method } = req;
 
+  var issues;
+
+  var options = {
+    select: {
+      id: true,
+      device: true,
+      problem: true,
+      status: true,
+      quote: true,
+      technician: true,
+    },
+    orderBy: [
+      {
+        updatedAt: "desc",
+      },
+    ],
+  };
+
   if (method === "POST") {
     let { status } = validatePayload(["email"], req);
 
@@ -13,50 +31,18 @@ export default async function (req, res) {
 
     let user = await prisma.User.findUnique({
       where: { email },
-      select: {
-        id: true,
-      },
+      select: { id: true },
     });
 
-    let issues = await prisma.Issues.findMany({
-      where: {
-        userId: user?.id,
-      },
-      select: {
-        id: true,
-        device: true,
-        problem: true,
-        status: true,
-        quote: true,
-        technician: true,
-      },
-      orderBy: [
-        {
-          updatedAt: "desc",
-        },
-      ],
+    issues = await prisma.Issues.findMany({
+      where: { userId: user?.id },
+      ...options,
     });
-
-    return res.status(200).send(issues);
   } else if (method === "GET") {
-    let issues = await prisma.Issues.findMany({
-      select: {
-        id: true,
-        device: true,
-        problem: true,
-        status: true,
-        quote: true,
-        technician: true,
-      },
-      orderBy: [
-        {
-          updatedAt: "desc",
-        },
-      ],
-    });
-
-    return res.status(200).send(issues);
+    issues = await prisma.Issues.findMany({ ...options });
   } else {
     return res.status(400).send({ msg: "Bad Request" });
   }
+
+  return res.status(200).send(issues);
 }

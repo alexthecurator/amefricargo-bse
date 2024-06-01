@@ -9,17 +9,69 @@ button {
   appearance: none;
   flex-direction: row;
   align-items: center;
-  padding: 8px 18px;
+  padding: 10.5px 18px;
   border-radius: 5px;
   justify-content: center;
   text-transform: capitalize;
 }
 
 input, select, textarea {
-  appearance: none;
+  width: 100%;
   outline: none;
-  padding: 6px 16px;
+  appearance: none;
+  padding: 6px 12px;
   margin: 2px;
+  -moz-appearance: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+select {
+  text-transform: capitalize;
+}
+
+select.round {
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    radial-gradient(#ddd 70%, transparent 72%);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - .5em) .5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1.5em 1.5em;
+  background-repeat: no-repeat;
+}
+
+select.round:focus {
+  background-image:
+    linear-gradient(45deg, white 50%, transparent 50%),
+    linear-gradient(135deg, transparent 50%, white 50%),
+    radial-gradient(gray 70%, transparent 72%);
+  background-position:
+    calc(100% - 15px) 1em,
+    calc(100% - 20px) 1em,
+    calc(100% - .5em) .5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1.5em 1.5em;
+  background-repeat: no-repeat;
+  border-color: green;
+  outline: 0;
+}
+
+
+label {
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 9px 0 9px 12px;
+  text-wrap: nowrap;
 }
 
 .o-black {

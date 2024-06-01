@@ -21,7 +21,7 @@ const Modal = ({ children }) => {
           onClick={() => {
             dispatch(toggle({ origin: "modal", status: { on: false, id } }));
           }}
-          className="absolute -right-12 -top-12"
+          className="absolute -right-12 -top-12 hover:text-red-800"
         >
           {" "}
           <Close size={32} />{" "}
