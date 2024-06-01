@@ -7,7 +7,7 @@ import { saveUserType } from "@/store/user";
 import { useDispatch, useSelector } from "react-redux";
 
 // Utils
-import { request } from "@/lib/utils";
+import { request, tzs } from "@/lib/utils";
 
 // Components
 import { NewIssue, SignUp, UpdateIssue } from "@/modules/form";
@@ -24,14 +24,54 @@ export default function Home() {
   let { type } = useSelector((state) => state.persisted);
 
   return (
-    <main>
+    <main className="w-full flex flex-col items-center">
       <Modals />
       <Navbar />
+      {type === "admin" ? <Analytics /> : ""}
       <Render />
       {type !== "admin" ? <AddIssue /> : ""}
     </main>
   );
 }
+
+const Analytics = () => {
+  let [data, setData] = useState([]);
+
+  async function getDetails() {
+    try {
+      let response = null;
+      response = await request.get("issues/analytics");
+      response?.status === 200 ? setData(response?.data) : false;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getDetails();
+  }, []);
+
+  return (
+    <div className="w-3/5 flex flex-row items-center justify-center space-x-4 pt-8">
+      <span className="bg-white drop-shadow-md px-8 py-3 rounded-md w-max flex flex-row items-center space-x-2">
+        <label htmlFor="">sales:</label>
+        <p>{tzs.format(data?.quote)}</p>
+      </span>
+      <span className="bg-red-100 drop-shadow-md px-8 py-3 rounded-md w-max flex flex-row items-center space-x-2">
+        <label htmlFor="">credit:</label>
+        <p>{tzs.format(data?.credit)}</p>
+      </span>
+      <span className="bg-green-100 drop-shadow-md px-8 py-3 rounded-md w-max flex flex-row items-center space-x-2">
+        <label htmlFor="">debit:</label>
+        <p>{tzs.format(data?.debit)}</p>
+      </span>
+      <span className="bg-white drop-shadow-md px-8 py-3 rounded-md w-max flex flex-row items-center space-x-2">
+        <label htmlFor="">issues:</label>
+        <p>{data?.issues}</p>
+      </span>
+    </div>
+  );
+};
 
 const Modals = () => {
   let { id } = useSelector((state) => state.ui.modal);
@@ -122,8 +162,8 @@ const Issues = ({ stream = [] }) => {
   }, []);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-start items-center pt-36">
-      <span className="w-1/2 flex flex-col space-y-4">
+    <div className="w-full h-screen flex flex-col justify-start items-center pt-8">
+      <span className="w-3/5 flex flex-col space-y-4">
         {/* Filters */}
         <span className="flex flex-row space-x-2 items-center justify-center">
           <fieldset className="w-full flex flex-row o-black">
@@ -154,7 +194,11 @@ const Issues = ({ stream = [] }) => {
             <label htmlFor="">created:</label>
             <input id="createdAt" type="date" onChange={onChange} />
           </fieldset>
-          <button className="s-black" type="button" onClick={() => submit()}>
+          <button
+            className="s-black"
+            type="button"
+            onClick={() => window.reload()}
+          >
             clear
           </button>
           <button className="s-black" type="button" onClick={() => submit()}>

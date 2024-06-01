@@ -7,13 +7,9 @@ const Navbar = () => {
   return (
     <nav className="w-full flex flex-row justify-between p-6">
       <span></span>
-      <Image
-        className="ml-16"
-        src={"/logo.svg"}
-        width={150}
-        height={150}
-        alt={"Gadget Support logo"}
-      />
+      <h2 className="ml-20 font-bold text-3xl">
+        Your <span className="text-slate-600">Logo</span> Here
+      </h2>
       <span className="flex flex-row items-center justify-center space-x-4">
         <Notification className="cursor-pointer" size={25} />
         <Profile />

@@ -21,7 +21,7 @@ const SignIn = () => {
         {/* Title & Caption */}
         <span className="flex flex-col justify-center items-center space-y-2">
           <h2 className="text-5xl font-bold">Welcome</h2>
-          <p>Is your device sick? Let us know</p>
+          <p>Connect with your clients at ease</p>
         </span>
         {/*  */}
         <CredentialLogin />

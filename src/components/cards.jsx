@@ -1,5 +1,6 @@
 import { toggle } from "@/store/ui";
 
+import { tzs } from "@/lib/utils";
 import { trimming } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -20,11 +21,6 @@ const Card = ({
     inprogress: "bg-yellow-500 text-white",
     fixed: "bg-green-500 text-white",
   };
-
-  let tzs = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "TZS",
-  });
 
   return (
     <span

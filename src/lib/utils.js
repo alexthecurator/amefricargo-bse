@@ -23,6 +23,11 @@ export function validatePayload(fields = [], req) {
   return status;
 }
 
+export var tzs = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "TZS",
+});
+
 export function trimming(val, size = 54) {
   return val.length > size ? `${val?.slice(0, size)}...` : val;
 }
