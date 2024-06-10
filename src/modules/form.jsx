@@ -80,7 +80,7 @@ export const SignUp = () => {
   }, [alert]);
 
   return (
-    <form onSubmit={submit} className="flex flex-col space-y-2">
+    <form className="flex flex-col space-y-2">
       <fieldset className="o-black">
         <label htmlFor="name">name:</label>
         <input
@@ -144,7 +144,13 @@ export const SignUp = () => {
       </span>
       {/* Notifications */}
       {alert && <small className="text-red-400 font-medium">{alert}</small>}
-      <button className="w-full s-black" type="submit">
+      <button
+        className="w-full s-black"
+        type="button"
+        onClick={() => {
+          submit();
+        }}
+      >
         Create your new account
       </button>
     </form>
