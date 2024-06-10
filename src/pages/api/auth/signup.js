@@ -7,17 +7,23 @@ export default async function (req, res) {
 
   if (method !== "POST") return res.status(400).send({ msg: "Bad request" });
 
-  let { status } = validatePayload(["name", "email", "image", "password"], req);
+  let { status } = validatePayload(
+    ["name", "email", "image", "p_method", "p_value", "password"],
+    req
+  );
 
   if (status) return res.status(400).send({ msg: status });
 
-  let { name, email, image, password } = req.body ?? {};
+  let { name, email, image, p_method, p_value, password } = req.body ?? {};
+
+  console.log(req.body);
 
   let user = await prisma.User.create({
     data: {
       name,
       email,
       image,
+      payment: { method: p_method, value: p_value },
     },
     select: {
       id: true,

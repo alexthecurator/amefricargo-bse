@@ -3,14 +3,14 @@ CREATE TABLE "Shipments" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT DEFAULT 'Maersk thirty',
     "quote" DOUBLE PRECISION DEFAULT 0.0,
     "credit" DOUBLE PRECISION DEFAULT 0.0,
     "debit" DOUBLE PRECISION DEFAULT 0.0,
-    "status" TEXT DEFAULT 'created',
-    "from" TIMESTAMP(3) NOT NULL,
-    "to" TIMESTAMP(3) NOT NULL,
+    "status" TEXT DEFAULT 'inquired',
+    "from" TIMESTAMP(3),
+    "to" TIMESTAMP(3),
     "userId" TEXT NOT NULL,
-    "cargoId" TEXT NOT NULL,
 
     CONSTRAINT "Shipments_pkey" PRIMARY KEY ("id")
 );
@@ -22,10 +22,12 @@ CREATE TABLE "Cargo" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
+    "description" TEXT,
     "dimensions" TEXT NOT NULL,
     "weight" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
     "userId" TEXT NOT NULL,
+    "shipmentId" TEXT NOT NULL,
 
     CONSTRAINT "Cargo_pkey" PRIMARY KEY ("id")
 );
@@ -66,6 +68,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "payment" JSONB,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -143,10 +146,10 @@ CREATE UNIQUE INDEX "Authenticator_credentialID_key" ON "Authenticator"("credent
 ALTER TABLE "Shipments" ADD CONSTRAINT "Shipments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Shipments" ADD CONSTRAINT "Shipments_cargoId_fkey" FOREIGN KEY ("cargoId") REFERENCES "Cargo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Cargo" ADD CONSTRAINT "Cargo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Cargo" ADD CONSTRAINT "Cargo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Cargo" ADD CONSTRAINT "Cargo_shipmentId_fkey" FOREIGN KEY ("shipmentId") REFERENCES "Shipments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

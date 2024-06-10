@@ -7,40 +7,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Shipments {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  quote     Float?   @default(0.0)
-  credit    Float?   @default(0.0)
-  debit     Float?   @default(0.0)
-  status    String?  @default("created")
-  from      DateTime
-  to        DateTime
-
-  User  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Cargo Cargo @relation(fields: [cargoId], references: [id], onDelete: Cascade)
-
-  userId  String
-  cargoId String
-
-  Transactions Transactions[]
-}
-
-model Cargo {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-  name       String
-  type       String
-  dimensions String
-  weight     Int
-  quantity   Int
+model ShipmentInquiries {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  name        String?   @default("New Inquiry")
+  description String?   @default("This is a new customer inquiry for a cargoset")
+  quote       Float?    @default(0.0)
+  credit      Float?    @default(0.0)
+  debit       Float?    @default(0.0)
+  status      String?   @default("inquired")
+  from        DateTime?
+  to          DateTime?
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  Shipments Shipments[]
+  Cargo        Cargo[]
+  Transactions Transactions[]
+}
+
+model Cargo {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  name        String
+  type        String
+  description String?
+  dimensions  String
+  weight      Int
+  quantity    Int
+
+  User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ShipmentInquiries ShipmentInquiries @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  userId     String
+  shipmentId String
 }
 
 model Transactions {
@@ -51,8 +53,8 @@ model Transactions {
   method    String
   status    String
 
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Shipments Shipments @relation(fields: [shipmentsId], references: [id])
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ShipmentInquiries ShipmentInquiries @relation(fields: [shipmentsId], references: [id])
 
   shipmentsId String
   userId      String
@@ -71,23 +73,25 @@ model Notifications {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
+  payment       Json?
+
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  Password      Password[]
-  Shipments     Shipments[]
-  Notifications Notifications[]
-  Transactions  Transactions[]
-  Cargo         Cargo[]
+  Cargo             Cargo[]
+  Password          Password[]
+  ShipmentInquiries ShipmentInquiries[]
+  Notifications     Notifications[]
+  Transactions      Transactions[]
 }
 
 model Password {

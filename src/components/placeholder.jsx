@@ -23,12 +23,12 @@ const Placeholder = () => {
         alt="Placeholder"
       />
 
-      {type !== "admin" ? <AddIssue /> : ""}
+      {type !== "admin" ? <AddShipment /> : ""}
     </div>
   );
 };
 
-const AddIssue = () => {
+const AddShipment = () => {
   let dispatch = useDispatch();
   let { status } = useSession();
 
@@ -39,7 +39,7 @@ const AddIssue = () => {
         dispatch(
           toggle({
             origin: "modal",
-            status: { on: true, id: "add-issue" },
+            status: { on: true, id: "query-shipment" },
           })
         );
       }}
@@ -48,7 +48,7 @@ const AddIssue = () => {
       } s-black flex-row space-x-3`}
     >
       <Plus size={15} color={"#fff"} />
-      <p>submit your issue</p>
+      <p>Query shipment</p>
     </button>
   );
 };

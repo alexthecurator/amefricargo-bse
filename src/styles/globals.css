@@ -20,12 +20,15 @@ input, select, textarea {
   outline: none;
   appearance: none;
   padding: 6px 12px;
-  margin: 2px;
   -moz-appearance: none;
   box-sizing: border-box;
   -webkit-appearance: none;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+}
+
+input, select {
+  margin: 2px;
 }
 
 select {
@@ -74,8 +77,14 @@ label {
   text-wrap: nowrap;
 }
 
+fieldset {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .o-black {
-  border: 1px #0e0e0e solid;
+  border: 1px #0e0e0e solid;  
   border-radius: 5px;
 }
 

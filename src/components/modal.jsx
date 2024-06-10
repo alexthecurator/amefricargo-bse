@@ -15,7 +15,7 @@ const Modal = ({ children }) => {
         on ? "fixed" : "hidden"
       } top-0 left-0 z-10 bg-black/[0.35]`}
     >
-      <div className="w-full relative max-w-[40%] bg-white rounded-lg p-2 fixed z-20 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%]">
+      <div className="w-full relative max-w-[45%] bg-white rounded-lg p-2 fixed z-20 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%]">
         <button
           type="button"
           onClick={() => {

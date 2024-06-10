@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { request, tzs } from "@/lib/utils";
 
 // Components
-import { NewIssue, SignUp, UpdateIssue } from "@/modules/form";
+import { NewInquiry, SignUp, UpdateInquiry } from "@/modules/form";
 import { Placeholder, Navbar, Card, Modal } from "@/components";
 
 // Auth
@@ -29,7 +29,7 @@ export default function Home() {
       <Navbar />
       {type === "admin" ? <Analytics /> : ""}
       <Render />
-      {type !== "admin" ? <AddIssue /> : ""}
+      {type !== "admin" ? <QueryShipment /> : ""}
     </main>
   );
 }
@@ -40,7 +40,7 @@ const Analytics = () => {
   async function getDetails() {
     try {
       let response = null;
-      response = await request.get("issues/analytics");
+      response = await request.get("inquiry/analytics");
       response?.status === 200 ? setData(response?.data) : false;
     } catch (error) {
       console.log(error);
@@ -66,7 +66,7 @@ const Analytics = () => {
         <p>{tzs.format(data?.debit)}</p>
       </span>
       <span className="bg-white drop-shadow-md px-8 py-3 rounded-md w-max flex flex-row items-center space-x-2">
-        <label htmlFor="">issues:</label>
+        <label htmlFor="">inquiries:</label>
         <p>{data?.issues}</p>
       </span>
     </div>
@@ -77,8 +77,8 @@ const Modals = () => {
   let { id } = useSelector((state) => state.ui.modal);
 
   let content = {
-    "add-issue": <NewIssue />,
-    "update-issue": <UpdateIssue />,
+    "query-shipment": <NewInquiry />,
+    "update-inquiry": <UpdateInquiry />,
     "sign-up": <SignUp />,
   };
 
@@ -98,9 +98,9 @@ const Render = () => {
       let response = null;
 
       if (type === "admin") {
-        response = await request.get("issues/all");
+        response = await request.get("inquiry/all");
       } else {
-        response = await request.post("issues/all", { email });
+        response = await request.post("inquiry/all", { email });
       }
       response?.status === 200 ? setData(response?.data) : false;
     } catch (error) {
@@ -110,7 +110,7 @@ const Render = () => {
 
   useEffect(() => {
     let account = "client";
-    session?.user?.email === "admin@gadgetsupport.com"
+    session?.user?.email === "patrick@amefricargo.com"
       ? (account = "admin")
       : false;
 
@@ -119,7 +119,7 @@ const Render = () => {
   }, [status]);
 
   if (data?.length > 0) {
-    return <Issues stream={data} />;
+    return <Inquiries stream={data} />;
   } else {
     return (
       <span className="w-full h-screen max-h-[80vh] flex flex-col justify-center items-center">
@@ -132,7 +132,7 @@ const Render = () => {
   }
 };
 
-const Issues = ({ stream = [] }) => {
+const Inquiries = ({ stream = [] }) => {
   let { data: session } = useSession();
   let [data, setData] = useState([]);
 
@@ -150,7 +150,7 @@ const Issues = ({ stream = [] }) => {
     type !== "admin" ? (filters.email = session?.user?.email) : false;
     try {
       setData([]);
-      let response = await request.post("issues/filter", filters);
+      let response = await request.post("inquiry/filter", filters);
       response?.status === 200 ? setData(response?.data) : false;
     } catch (error) {
       console.log(error);
@@ -167,12 +167,12 @@ const Issues = ({ stream = [] }) => {
         {/* Filters */}
         <span className="flex flex-row space-x-2 items-center justify-center">
           <fieldset className="w-full flex flex-row o-black">
-            <label htmlFor="">device:</label>
+            <label htmlFor="">title:</label>
             <input
               type="text"
-              id="device"
+              id="name"
               onChange={onChange}
-              placeholder="Search device"
+              placeholder="Search inquiry title"
             />
           </fieldset>
           <fieldset className="w-3/4 flex flex-row o-black">
@@ -181,23 +181,16 @@ const Issues = ({ stream = [] }) => {
               <option value="" default>
                 Select status
               </option>
-              <option value="created">created</option>
               <option value="received">received</option>
-              <option value="inprogress">in-progress</option>
-              <option value="fixed">
-                <span className="rounded-full bg-green-500"></span>
-                <p>fixed</p>
-              </option>
+              <option value="loading">loading</option>
+              <option value="shipping">shipping</option>
+              <option value="arrived">arrived</option>
             </select>
-          </fieldset>
-          <fieldset className="w-3/4 flex flex-row o-black">
-            <label htmlFor="">created:</label>
-            <input id="createdAt" type="date" onChange={onChange} />
           </fieldset>
           <button
             className="s-black"
             type="button"
-            onClick={() => window.reload()}
+            onClick={() => setData(stream)}
           >
             clear
           </button>
@@ -216,7 +209,7 @@ const Issues = ({ stream = [] }) => {
   );
 };
 
-const AddIssue = () => {
+const QueryShipment = () => {
   let dispatch = useDispatch();
   let { status } = useSession();
 
@@ -228,7 +221,7 @@ const AddIssue = () => {
           dispatch(
             toggle({
               origin: "modal",
-              status: { on: true, id: "add-issue" },
+              status: { on: true, id: "query-shipment" },
             })
           );
       }}
