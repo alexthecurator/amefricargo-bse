@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-export default async function (req, res) {
+export default async function update(req, res) {
   let { method } = req;
 
   if (method !== "PUT") return res.status(400).send({ msg: "Bad request" });

@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { validatePayload } from "@/lib/utils";
 
-export default async function (req, res) {
+export default async function filter(req, res) {
   let { method } = req;
 
   if (method !== "POST") return res.status(400).send({ msg: "Bad request" });

@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import CryptoJS from "crypto-js";
 import { validatePayload } from "@/lib/utils";
 
-export default async function (req, res) {
+export default async function signUp(req, res) {
   let { method } = req;
 
   if (method !== "POST") return res.status(400).send({ msg: "Bad request" });
