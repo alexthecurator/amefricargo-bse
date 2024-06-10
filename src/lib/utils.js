@@ -33,5 +33,5 @@ export function trimming(val, size = 54) {
 }
 
 export const request = axios.create({
-  baseURL: `${process.env.NEXTAUTH_URL}/api/`,
+  baseURL: "https://amefricargo-bse.vercel.app/api/",
 });
