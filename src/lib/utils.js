@@ -33,5 +33,5 @@ export function trimming(val, size = 54) {
 }
 
 export const request = axios.create({
-  baseURL: "http://localhost:3000/api/",
+  baseURL: process.env.NEXTAUTH_URL + "/api/",
 });
