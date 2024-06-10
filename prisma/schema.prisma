@@ -7,23 +7,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Issues {
+model Shipments {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  quote     Float?   @default(0.0)
+  credit    Float?   @default(0.0)
+  debit     Float?   @default(0.0)
+  status    String?  @default("created")
+  from      DateTime
+  to        DateTime
+
+  User  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Cargo Cargo @relation(fields: [cargoId], references: [id], onDelete: Cascade)
+
+  userId  String
+  cargoId String
+
+  Transactions Transactions[]
+}
+
+model Cargo {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  device     String
-  problem    String
-  status     String?  @default("created")
-  technician String?
-  credit     Float?   @default(0.0)
-  debit      Float?   @default(0.0)
-  quote      Float?   @default(0.0)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  name       String
+  type       String
+  dimensions String
+  weight     Int
+  quantity   Int
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  Shipments Shipments[]
+}
+
+model Transactions {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  price     Int
+  method    String
+  status    String
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Shipments Shipments @relation(fields: [shipmentsId], references: [id])
+
+  shipmentsId String
+  userId      String
+}
+
+model Notifications {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  type      String
+  status    String
+  message   String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model User {
   id            String          @id @default(cuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   name          String?
   email         String          @unique
   emailVerified DateTime?
@@ -33,16 +83,19 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Issues    Issues[]
-  Password  Password[]
+  Password      Password[]
+  Shipments     Shipments[]
+  Notifications Notifications[]
+  Transactions  Transactions[]
+  Cargo         Cargo[]
 }
 
 model Password {
-  id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
   password String
 }
 
