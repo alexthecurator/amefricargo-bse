@@ -27,14 +27,16 @@ const Card = ({
   return (
     <span
       onClick={() => {
-        if (type === "admin") {
-          dispatch(
-            toggle({
-              origin: "modal",
-              status: { on: true, id: "update-inquiry", data: { id } },
-            })
-          );
-        }
+        dispatch(
+          toggle({
+            origin: "modal",
+            status: {
+              on: true,
+              id: type === "admin" ? "update-inquiry" : "view-inquiry",
+              data: { id },
+            },
+          })
+        );
       }}
       className={`w-full flex flex-col justify-between space-y-4 p-4 bg-white rounded-lg drop-shadow-lg ${
         type === "admin" ? "cursor-pointer" : ""
@@ -42,9 +44,14 @@ const Card = ({
     >
       <span className="flex flex-col space-y-1">
         <h3 className="text-2xl">{name}</h3>
-        <small className="font-light">
-          {from} - {to}
-        </small>
+        <span className="flex flex-row space-x-2">
+          <small className="capitalize bg-orange-100 py-[2px] px-[8px] rounded-md">
+            from: {from?.split("T")[0]}
+          </small>
+          <small className="capitalize bg-green-100 py-[2px] px-[8px] rounded-md">
+            to: {to?.split("T")[0]}
+          </small>
+        </span>
       </span>
       <p className="font-light">{trimming(description, 60)}</p>
       <span className="flex flex-row justify-between">
