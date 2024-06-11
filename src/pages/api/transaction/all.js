@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { validatePayload } from "@/lib/utils";
 
-export default async function (req, res) {
+export default async function all(req, res) {
   let { method } = req;
 
   var issues;

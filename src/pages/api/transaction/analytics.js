@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-export default async function (req, res) {
+export default async function analytics(req, res) {
   let { method } = req;
 
   if (method !== "GET") return res.status(400).send({ msg: "Bad request" });
