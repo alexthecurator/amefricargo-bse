@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { request, tzs } from "@/lib/utils";
 
 // Components
-import { NewInquiry, SignUp, UpdateInquiry } from "@/modules/form";
+import { NewInquiry, SignUp, ViewInquiry, UpdateInquiry } from "@/modules/form";
 import { Placeholder, Navbar, Card, Modal } from "@/components";
 
 // Auth
@@ -79,6 +79,7 @@ const Modals = () => {
   let content = {
     "query-shipment": <NewInquiry />,
     "update-inquiry": <UpdateInquiry />,
+    "view-inquiry": <ViewInquiry />,
     "sign-up": <SignUp />,
   };
 
